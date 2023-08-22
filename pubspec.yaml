@@ -1,5 +1,5 @@
 name: abgtools
-description: A new Flutter project.
+description: ABG USINE platform.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -44,6 +44,11 @@ dependencies:
   get: ^4.6.5
   flutter_svg: ^1.0.3
   flutter_secure_storage: ^8.0.0
+  file_picker: ^5.2.5
+  excel: 2.0.1
+  printing: ^5.9.3
+  dxf: ^3.1.1
+  flutter_file_saver: ^0.6.1+1
 
 
 
@@ -54,14 +59,20 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_native_splash: ^2.2.17
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/icon.png"  
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/splash/splash.png
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -92,7 +103,7 @@ flutter:
   fonts:
      - family: NotoKufiArabic
        fonts:
-         - asset: assets/fonts/NotoKufiArabic-VariableFont_wght.ttf  
+         - asset: assets/fonts/Cairo-Regular.ttf      
   # fonts:
   #   - family: Schyler
   #     fonts:

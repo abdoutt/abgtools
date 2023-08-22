@@ -22,8 +22,13 @@ class AddEditArticleViewModel extends CRUDViewModel<ArticleModel> {
   TextEditingController surfaceController = TextEditingController();
   TextEditingController tableCoupController = TextEditingController();
   TextEditingController trempController = TextEditingController();
+  TextEditingController serviceController = TextEditingController();
+  TextEditingController trouController = TextEditingController();
+  TextEditingController PrixtrouController = TextEditingController();
   TextEditingController lavageController = TextEditingController();
-
+  TextEditingController coutController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  DateTime createdAt = DateTime.now();
 
   AddEditArticleViewModel(super.t, super.e, super.p) {
     nomPieceController.text = entity.nomPiece;
@@ -40,6 +45,12 @@ class AddEditArticleViewModel extends CRUDViewModel<ArticleModel> {
     lavageController.text = entity.lavage.toString();
     serigraphieController.text = entity.serigraphie.toString();
     trempController.text = entity.tremp.toString();
+    serviceController.text = entity.service.toString();
+    coutController.text = entity.cout.toString();
+    trouController.text = entity.trou.toString();
+    PrixtrouController.text = entity.prixTrou.toString();
+    nameController.text = entity.name;
+    createdAt = entity.createdAt;
   }
 
   @override
@@ -47,32 +58,39 @@ class AddEditArticleViewModel extends CRUDViewModel<ArticleModel> {
     super.onInit();
     super.validationProperties = [
       "name",
-      "code",
+      "namePice",
       "color",
       "refrence",
       "epaisseur",
+      "prix",
     ];
   }
 
   @override
   ArticleModel prepareNewItem() {
     var temp = ArticleModel(
-                        id: 0,
-                        codebar: "",
-                        color: "",
-                        electricite: 0,
-                        epaisseur: 0,
-                        faconnage: 0,
-                        largeure: 0,
-                        lavage: 0,
-                        longueur: 0,
-                        name: "",
-                        nomPiece: "",
-                        refrence: "",
-                        serigraphie: 0,
-                        surface: 0,
-                        tableCoup: 0,
-                        tremp: 0);
+        id: 0,
+        codebar: "",
+        color: "",
+        electricite: 0,
+        epaisseur: 0,
+        faconnage: 0,
+        largeure: 0,
+        lavage: 0,
+        longueur: 0,
+        name: "",
+        nomPiece: "",
+        refrence: "",
+        serigraphie: 0,
+        surface: 0,
+        tableCoup: 0,
+        prixVent: 0,
+        cout: 0,
+        service: 0,
+        trou: 0,
+        prixTrou: 0,
+        createdAt: DateTime.now(),
+        tremp: 0);
     //re-initialize controller
     nomPieceController.text = temp.nomPiece;
     codeController.text = temp.codebar;
@@ -88,15 +106,25 @@ class AddEditArticleViewModel extends CRUDViewModel<ArticleModel> {
     lavageController.text = temp.lavage.toString();
     serigraphieController.text = temp.serigraphie.toString();
     trempController.text = temp.tremp.toString();
+    serviceController.text = temp.service.toString();
+    coutController.text = temp.cout.toString();
+    trouController.text = temp.trou.toString();
+     PrixtrouController.text = temp.prixTrou.toString();
+    nameController.text = temp.name;
+    createdAt = temp.createdAt;
     return temp;
   }
 
   @override
   Future<bool> save() async {
     //fill properties
+    surfaceController.text = (double.parse(largeureController.text) *
+            double.parse(longueurController.text))
+        .toString();
     entity.nomPiece = nomPieceController.text;
     entity.codebar = codeController.text;
     entity.color = colorController.text;
+    entity.name = nameController.text;
     entity.electricite = double.parse(electriciteController.text);
     entity.refrence = refrenceController.text;
     entity.faconnage = double.parse(faconnageController.text);
@@ -107,7 +135,20 @@ class AddEditArticleViewModel extends CRUDViewModel<ArticleModel> {
     entity.surface = double.parse(surfaceController.text);
     entity.tableCoup = double.parse(tableCoupController.text);
     entity.tremp = double.parse(trempController.text);
-
+    entity.cout = double.parse(coutController.text);
+    entity.trou = double.parse(trouController.text);
+    entity.prixTrou = double.parse(PrixtrouController.text);
+    entity.serigraphie = double.parse(serigraphieController.text);
+    entity.createdAt = createdAt;
+    entity.prixVent =
+        ((entity.surface + (entity.surface * 0.15)) * entity.cout) +
+            entity.electricite +
+            entity.faconnage +
+            entity.lavage +
+            entity.tremp +
+            (entity.trou * entity.prixTrou) +
+            entity.service +
+            entity.serigraphie;
     //Todo save API methodes
     try {
       var id = entity.id == 0
@@ -144,17 +185,26 @@ class AddEditArticleViewModel extends CRUDViewModel<ArticleModel> {
   String? validateField(String propertyName) {
     switch (propertyName) {
       case "name":
-        return nomPieceController.text.isEmpty ? "الاسم اجباري" : null;
+        return nomPieceController.text.isEmpty
+            ? "Le nom est obligatoire"
+            : null;
+      case "namePice":
+        return nomPieceController.text.isEmpty
+            ? "Le nom de pice est obligatoire"
+            : null;
 
-      case "code":
-        return codeController.text.isEmpty ? "كودبار اجباري" : null;
-
-          case "color":
-        return colorController.text.isEmpty ? "اللون اجباري" : null;
-          case "refrence":
-        return refrenceController.text.isEmpty ? "المرجع اجباري" : null;
-          case "epaisseur":
-        return epaisseurController.text.isEmpty ? "السمك" : null;
+      case "color":
+        return colorController.text.isEmpty
+            ? "La couleur est obligatoire"
+            : null;
+      case "refrence":
+        return refrenceController.text.isEmpty
+            ? "La référence est obligatoire"
+            : null;
+      case "epaisseur":
+        return epaisseurController.text.isEmpty
+            ? "Le epaisseur est obligatoire"
+            : null;
       default:
         return null;
     }

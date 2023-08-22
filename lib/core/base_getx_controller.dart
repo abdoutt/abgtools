@@ -308,7 +308,7 @@ abstract class BaseGetxController extends GetxController {
               SizedBox(
                 height: 15,
               ),
-              Text('inProgress'.tr)
+              Text('en cours')
             ],
           ),
           radius: 3.0);
@@ -322,7 +322,7 @@ abstract class BaseGetxController extends GetxController {
     } on UnauthorizedException catch (e) {
       Get.back();
       await Get.defaultDialog(
-          title: 'excuseme'.tr,
+          title: 'excusez-moi',
           // onConfirm: () {
           //   isCanceled = true;
           //   Get.back();
@@ -333,7 +333,7 @@ abstract class BaseGetxController extends GetxController {
               Get.back();
             },
             child: Text(
-              'ok'.tr,
+              'OK',
               style: TextStyle(color: Colors.white),
             ),
             style: ButtonStyle(
@@ -379,7 +379,7 @@ abstract class BaseGetxController extends GetxController {
               Get.back();
             },
             child: Text(
-              'ok'.tr,
+              'OK',
               style: TextStyle(color: Colors.white),
             ),
             style: ButtonStyle(

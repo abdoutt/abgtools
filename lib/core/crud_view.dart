@@ -85,7 +85,7 @@ abstract class CRUDView<T extends CRUDViewModel> extends StatelessWidget {
                             },
                           ),
                           Text(
-                            "أغلق بعد الحفظ",
+                            "Fermer après avoir enregistré",
                             style: const TextStyle(
                                 color: Colors.grey, fontSize: 13.0),
                           )
@@ -106,7 +106,7 @@ abstract class CRUDView<T extends CRUDViewModel> extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
-                            "إلغاء",
+                            "Annulation",
                             style: TextStyle(
                                 color: secondColor75,
                                 fontSize: 14.0,
@@ -127,7 +127,7 @@ abstract class CRUDView<T extends CRUDViewModel> extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
-                            "أنشئ جديد",
+                            "Créer un nouveau",
                             style: TextStyle(
                                 color: primaryColor,
                                 fontSize: 14.0,
@@ -148,7 +148,7 @@ abstract class CRUDView<T extends CRUDViewModel> extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          "حفظ",
+                          "Enregistrer",
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 14.0,

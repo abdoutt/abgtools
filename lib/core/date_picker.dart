@@ -52,15 +52,15 @@ class DatePikerView extends StatelessWidget {
           borderRadius: BorderRadius.circular(6),
         ),
         child: Obx(() => SizedBox(
-          height: 30,
+          height: 35,
           child: TextFormField(
                 decoration: InputDecoration(
                     counterText: "",
                     errorStyle: TextStyle(fontSize: 0.1),
                     fillColor: Colors.white,
                     hoverColor: Colors.transparent,
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 0.0, horizontal: 8.0),
+                      contentPadding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10.0),
                     prefixStyle: const TextStyle(color: Colors.black),
                     filled: true,
                     isDense: true,
@@ -69,21 +69,21 @@ class DatePikerView extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(3.0),
                       borderSide: BorderSide(
-                        color:Colors.black87,
+                        color:secondColor7,
                         width: 1.0,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(3.0),
                       borderSide: BorderSide(
-                        color: Colors.black87,
+                        color: secondColor20,
                         width: 1.0,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(3.0),
                         borderSide: BorderSide(
-                          color: Colors.black54,
+                          color: secondColor20,
                           width: 1.0,
                         )),
                     suffixIcon: InkWell(

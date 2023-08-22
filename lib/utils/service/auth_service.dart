@@ -1,11 +1,12 @@
 
+import 'package:abgtools/model/envrinementModel.dart';
 import 'package:abgtools/setting/storage_cache.dart';
 import 'package:get/get.dart';
 
 class AuthService extends GetxService {
   final RxBool isLogin = true.obs;
   final RxInt isProfail = 4.obs;
-  String? env;
+  EnvrinementModel? env;
   Future<AuthService> init() async {
     env = await getEnvirenment();
     if (env != null) {

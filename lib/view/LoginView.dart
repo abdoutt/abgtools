@@ -56,7 +56,7 @@ class LoginView extends StatelessWidget {
                                 padding:  EdgeInsets.only(
                                     top: 10.0, bottom: 10.0),
                                 child: CustomText(
-                                  text: "البريد الالكتروني",
+                                  text: "Email",
                                   size: 13,
                                 weight: FontWeight.w600,
                                   color: Colors.black54,
@@ -114,7 +114,7 @@ class LoginView extends StatelessWidget {
                                 padding:  EdgeInsets.only(
                                     top: 10.0, bottom: 10.0),
                                 child: CustomText(
-                                  text: "كلمة المرور",
+                                  text: "Mot de passe",
                                   size: 13,
                                   weight: FontWeight.w600,
                                   color: Colors.black54,
@@ -183,7 +183,7 @@ class LoginView extends StatelessWidget {
                                   vm.validateFormAndLogin(context);
                                 },
                                 validator: (val) => validateRequired(
-                                    val!, 'كلمة المرور'),
+                                    val!, 'Mot de passe'),
                               )),
                           Obx(() => vm.loginvalidation.value
                               ? const SizedBox()
@@ -196,7 +196,7 @@ class LoginView extends StatelessWidget {
                                       height: 20,
                                     ),
                                     CustomText(
-                                        text: 'اسم المستخدم أو كلمة المرور غير صحيحة',
+                                        text: 'Le pseudo ou mot de passe est incorect',
                                         size: 13,
                                         color: Colors.red,
                                         aligment: TextAlign.left),
@@ -235,7 +235,7 @@ class LoginView extends StatelessWidget {
                                             )
                                           : const SizedBox()),
                                       const CustomText(
-                                        text: "تسجيل الدخول",
+                                        text: "Connecter",
                                         color: Colors.white,
                                         size: 13,
                                       ),
@@ -254,7 +254,7 @@ class LoginView extends StatelessWidget {
                       : const SizedBox(),
                   ResponsiveWidget.isSmallScreen(context)
                       ? CustomText(
-                          text: "مدعوم من Gamedev",
+                          text: "Propulsé par Gamedev",
                           size: 14,
                           color: Colors.black,
                           weight: FontWeight.w400,

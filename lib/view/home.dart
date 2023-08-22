@@ -18,26 +18,87 @@ class HomeView extends PracticesView<ArticleModel, HomeViewModel> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${item.tableCoup} / ${item.color}",
-                  style: cardTitleTextStyle,
-                ),
-                Text(
-                  "${item.serigraphie} / ${item.epaisseur}",
-                  style: cardResultTextStyle,
-                ),
-                Text(
-                  "${item.largeure} / ${item.longueur} ",
-                  style: cardResultTextStyle,
-                ),
-              ],
-            ),
-          ),
+          authService.env!.type != 0
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  Row(
+                    children: [
+                      Text(
+                        item.nomPiece,
+                        style: cardTitleTextStyle,
+                      )
+                    ],
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Prix ​​de vente",
+                        style: cardTitleTextStyle,
+                      ),
+                      Text(
+                        item.nomPiece,
+                        style: cardTitleTextStyle,
+                      ),
+                    ],
+                  ),
+                ])
+              : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${item.nomPiece} / ${item.name}",
+                        style: cardTitleTextStyle,
+                      ),
+                    ],
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        item.refrence,
+                        style: cardTitleTextStyle,
+                      ),
+                      Text(
+                        formatter.format(item.createdAt),
+                        style: cardTitleTextStyle,
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "${item.faconnage} / ${item.color} =  ${item.cout}",
+                    style: cardSubTitleTextStyle,
+                  ),
+                  Text(
+                    "${item.largeure} / ${item.epaisseur} / ${item.serigraphie}",
+                    style: cardSubTitleTextStyle,
+                  ),
+                  Text(
+                    "${item.largeure} / ${item.longueur}  = ${item.surface} ",
+                    style: cardSubTitleTextStyle,
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Prix ​​de vente',
+                        style: cardSubTitleTextStyle,
+                      ),
+                      Text(
+                        formatCurrency.format(item.prixVent),
+                        style: cardTitleTextStyle,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
         ],
       ),
     );
@@ -45,209 +106,260 @@ class HomeView extends PracticesView<ArticleModel, HomeViewModel> {
 
   @override
   List<GridColumn> buildColumns(BuildContext context) {
-    return <GridColumn>[
-      GridColumn(
-          columnName: 'model',
-          columnWidthMode: ResponsiveWidget.isLargeScreen(context)
-              ? ColumnWidthMode.fill
-              : ColumnWidthMode.auto,
-          label: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'اسم الجزء',
-                  style: columnTextStyle,
-                ),
-              ),
-            ],
-          )),
-
-      GridColumn(
-          columnName: 'model',
-          columnWidthMode: ResponsiveWidget.isLargeScreen(context)
-              ? ColumnWidthMode.fill
-              : ColumnWidthMode.auto,
-          label: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'مرجع',
-                  style: columnTextStyle,
-                ),
-              ),
-            ],
-          )),
-          
-           GridColumn(
-          columnWidthMode: ResponsiveWidget.isLargeScreen(context)
-              ? ColumnWidthMode.fill
-              : ColumnWidthMode.auto,
-          columnName: 'model',
-          label: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'الباركود',
-                  style: columnTextStyle,
-                ),
-              ),
-            ],
-          )),
-      GridColumn(
-          columnWidthMode: ResponsiveWidget.isLargeScreen(context)
-              ? ColumnWidthMode.fill
-              : ColumnWidthMode.auto,
-          columnName: 'model',
-          label: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'اللون',
-                  style: columnTextStyle,
-                ),
-              ),
-            ],
-          )),
-      GridColumn(
-          columnWidthMode: ResponsiveWidget.isLargeScreen(context)
-              ? ColumnWidthMode.fill
-              : ColumnWidthMode.auto,
-          columnName: 'model',
-          label: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'السماكة',
-                  style: columnTextStyle,
-                ),
-              ),
-            ],
-          )),
-      GridColumn(
-          columnWidthMode: ResponsiveWidget.isLargeScreen(context)
-              ? ColumnWidthMode.fill
-              : ColumnWidthMode.auto,
-          columnName: 'model',
-          label: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'الطول',
-                  style: columnTextStyle,
-                ),
-              ),
-            ],
-          )),
-      GridColumn(
-          columnWidthMode: ResponsiveWidget.isLargeScreen(context)
-              ? ColumnWidthMode.fill
-              : ColumnWidthMode.auto,
-          columnName: 'model',
-          label: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'العرض',
-                  style: columnTextStyle,
-                ),
-              ),
-            ],
-          )),
-      GridColumn(
-          columnWidthMode: ResponsiveWidget.isLargeScreen(context)
-              ? ColumnWidthMode.fill
-              : ColumnWidthMode.auto,
-          columnName: 'model',
-          label: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'السطح',
-                  style: columnTextStyle,
-                ),
-              ),
-            ],
-          )),
-      GridColumn(
-          columnWidthMode: ResponsiveWidget.isLargeScreen(context)
-              ? ColumnWidthMode.fill
-              : ColumnWidthMode.auto,
-          columnName: 'model',
-          label: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'الكهرباء',
-                  style: columnTextStyle,
-                ),
-              ),
-            ],
-          )),
-      GridColumn(
-          columnWidthMode: ResponsiveWidget.isLargeScreen(context)
-              ? ColumnWidthMode.fill
-              : ColumnWidthMode.auto,
-          columnName: 'model',
-          label: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'تشكيل',
-                  style: columnTextStyle,
-                ),
-              ),
-            ],
-          )),
-      GridColumn(
-          columnWidthMode: ResponsiveWidget.isLargeScreen(context)
-              ? ColumnWidthMode.fill
-              : ColumnWidthMode.auto,
-          columnName: 'model',
-          label: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'غسل',
-                  style: columnTextStyle,
-                ),
-              ),
-            ],
-          )),
-      GridColumn(
-          columnWidthMode: ResponsiveWidget.isLargeScreen(context)
-              ? ColumnWidthMode.fill
-              : ColumnWidthMode.auto,
-          columnName: 'model',
-          label: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'طاولة الركلة',
-                  style: columnTextStyle,
-                ),
-              ),
-            ],
-          )),
-      GridColumn(
-          columnWidthMode: ResponsiveWidget.isLargeScreen(context)
-              ? ColumnWidthMode.fill
-              : ColumnWidthMode.auto,
-          columnName: 'model',
-          label: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'طباعة الشاشة',
-                  style: columnTextStyle,
-                ),
-              ),
-            ],
-          )),
-      GridColumn(
-          columnName: 'model',
-          label: Text(
-            '',
-          )),
-    ];
+    return authService.env!.type != 0
+        ? <GridColumn>[
+            GridColumn(
+                columnName: 'model',
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Nom de piece',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                columnName: 'model',
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Prix ​​de vente',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnName: 'model',
+                label: Text(
+                  '',
+                )),
+          ]
+        : <GridColumn>[
+            GridColumn(
+                columnName: 'model',
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Nom de piece',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnName: 'model',
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Refrence',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                columnName: 'model',
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        ' code a baar',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                columnName: 'model',
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Couleur',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                columnName: 'model',
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Epaisseur',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                columnName: 'model',
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Longueur',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                columnName: 'model',
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Largeur',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                columnName: 'model',
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Surface',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                columnName: 'model',
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Electricite',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                columnName: 'model',
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Façonnage',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                columnName: 'model',
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Lavage',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                columnName: 'model',
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Table de coup',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                columnName: 'model',
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Sérigraphie',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnWidthMode: ResponsiveWidget.isLargeScreen(context)
+                    ? ColumnWidthMode.fill
+                    : ColumnWidthMode.auto,
+                columnName: 'model',
+                label: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Prix ​​de vente',
+                        style: columnTextStyle,
+                      ),
+                    ),
+                  ],
+                )),
+            GridColumn(
+                columnName: 'model',
+                label: Text(
+                  '',
+                )),
+          ];
   }
 }

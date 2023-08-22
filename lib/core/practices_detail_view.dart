@@ -67,7 +67,7 @@ class PracticesDetailView<P extends PracticesViewModel>
                                 fillColor: Colors.white,
                                 hoverColor: secondColor7,
                                 filled: true,
-                                hintText: 'main_serche'.tr,
+                                hintText: 'recherche',
                                 counter: const SizedBox.shrink(),
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 8,

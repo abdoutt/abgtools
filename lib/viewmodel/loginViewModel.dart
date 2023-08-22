@@ -50,7 +50,7 @@ class LoginViewModel extends GetxController {
                       SizedBox(
                         height: 15,
                       ),
-                      CustomText(text: 'جاري المعالجة الآن')
+                      CustomText(text: 'Traitement maintenant')
                     ],
                   )
                 ],

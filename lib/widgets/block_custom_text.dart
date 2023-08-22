@@ -26,7 +26,7 @@ class BlockCustomText extends StatelessWidget {
       textAlign: aligment,
       
       style: TextStyle(
-          fontFamily: 'fontfamilly'.tr,
+           fontFamily: 'NotoKufiArabic',
           height: height ?? 1.5,
           fontSize: size ?? 13,
           color: color ?? Colors.black,

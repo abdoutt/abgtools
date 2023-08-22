@@ -268,7 +268,7 @@ abstract class PracticesView<T extends IIdentity,
                                           hintStyle: const TextStyle(
                                               color: Colors.black87,
                                               fontSize: 12),
-                                          hintText: 'بحث',
+                                          hintText: 'Recherche',
                                           border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(7.0),
@@ -361,7 +361,7 @@ abstract class PracticesView<T extends IIdentity,
                                             }),
                                             customButton: CustomButtonDropDown(
                                                 preImage: "action.png",
-                                                text: "الاجراء",
+                                                text: "Action",
                                                 suffixImage: "dropdown.png"),
                                             dropdownWidth: 200,
                                             items: practicesViewModel
@@ -420,7 +420,7 @@ abstract class PracticesView<T extends IIdentity,
                                           }),
                                           customButton: CustomButtonDropDown(
                                               preImage: "printer.png",
-                                              text: "طباعة",
+                                              text: "Printer",
                                               suffixImage: "dropdown.png"),
                                           dropdownWidth: 200,
                                           items: practicesViewModel.printCommands
@@ -567,7 +567,7 @@ abstract class PracticesView<T extends IIdentity,
                                             }),
                                             customButton: CustomButtonDropDown(
                                                 preImage: "action.png",
-                                                text: "الاجراء",
+                                                text: "Action",
                                                 suffixImage: "dropdown.png"),
                                             dropdownWidth: 200,
                                             items: practicesViewModel
@@ -626,7 +626,7 @@ abstract class PracticesView<T extends IIdentity,
                                           }),
                                           customButton: CustomButtonDropDown(
                                               preImage: "printer.png",
-                                              text: "طباعة",
+                                              text: "Printer",
                                               suffixImage: "dropdown.png"),
                                           dropdownWidth: 200,
                                           items: practicesViewModel.printCommands
@@ -706,7 +706,7 @@ abstract class PracticesView<T extends IIdentity,
                                                 hintStyle: const TextStyle(
                                                     color: Colors.black87,
                                                     fontSize: 12),
-                                                hintText: 'بحث',
+                                                hintText: 'Recherche',
                                                 border: OutlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(7.0),
@@ -890,7 +890,7 @@ abstract class PracticesView<T extends IIdentity,
                                             }),
                                             customButton: CustomButtonDropDown(
                                                 preImage: "action.png",
-                                                text: "الاجراء",
+                                                text: "Action",
                                                 suffixImage: "dropdown.png"),
                                             dropdownWidth: 200,
                                             items: practicesViewModel
@@ -949,7 +949,7 @@ abstract class PracticesView<T extends IIdentity,
                                           }),
                                           customButton: CustomButtonDropDown(
                                               preImage: "printer.png",
-                                              text: "طباعة",
+                                              text: "Printer",
                                               suffixImage: "dropdown.png"),
                                           dropdownWidth: 200,
                                           items: practicesViewModel.printCommands
@@ -1029,7 +1029,7 @@ abstract class PracticesView<T extends IIdentity,
                                                 hintStyle: const TextStyle(
                                                     color: Colors.black87,
                                                     fontSize: 12),
-                                                hintText: 'بحث',
+                                                hintText: 'Recherche',
                                                 border: OutlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(7.0),
@@ -1431,7 +1431,7 @@ abstract class PracticesView<T extends IIdentity,
                                     ? Center(
                                         child: Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text("cardsvide".tr),
+                                        child: Text("cartes vides"),
                                       ))
                                     : Expanded(
                                         child: ListView.builder(

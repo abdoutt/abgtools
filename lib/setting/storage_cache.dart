@@ -1,27 +1,26 @@
 import 'dart:convert';
-import 'package:get/get.dart';
+import 'package:abgtools/model/envrinementModel.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-
+import 'package:get/get.dart';
 
 FlutterSecureStorage  storage = new FlutterSecureStorage();
-Future<String?> getEnvirenment() async {
+Future<EnvrinementModel?> getEnvirenment() async {
   String? envirenmentMap = await storage.read(key: "Envirenment");
   if ((envirenmentMap ?? '') == '' || envirenmentMap == 'null') {
     return null;
   } else {
-    var envirenment = envirenmentMap;
+    var envirenment = EnvrinementModel.fromMap(json.decode(envirenmentMap!));
     return envirenment;
   }
 }
 
-setEnvirenment(String? envirenment) async {
+setEnvirenment(EnvrinementModel? envirenment) async {
   if (envirenment == null) {
     //await setPreferenceString("Envirenment", '');
     await storage.write(key: "Envirenment", value: "");
   } else {
     await storage.write(
-        key: "Envirenment", value: envirenment);
+        key: "Envirenment", value: json.encode(envirenment.toMap()));
 
     //await setPreferenceString("Envirenment", json.encode(envirenment.toMap()));
   }
