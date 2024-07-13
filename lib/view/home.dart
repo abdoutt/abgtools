@@ -184,7 +184,7 @@ class HomeView extends PracticesView<ArticleModel, HomeViewModel> {
                   children: [
                     Expanded(
                       child: Text(
-                        ' code a baar',
+                        'code a baar',
                         style: columnTextStyle,
                       ),
                     ),

@@ -12,7 +12,7 @@ import 'package:http_parser/http_parser.dart';
 Future<dynamic?> getArticlePage(String filter, int page, int limit) async {
   var result = Uri.https(uri, 'abgTools/articlepage.php', {
     "search": filter,
-    "page": "$page",
+    "page": "${page+1}",
     "limit": "$limit",
   });
   var response = await http.get(result,

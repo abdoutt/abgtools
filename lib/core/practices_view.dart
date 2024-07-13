@@ -5,6 +5,8 @@ import 'package:abgtools/core/filter_option_view.dart';
 import 'package:abgtools/core/iidentity.dart';
 import 'package:abgtools/core/practices_view_model.dart';
 import 'package:abgtools/core/relay_command.dart';
+import 'package:abgtools/setting/storage_cache.dart';
+import 'package:abgtools/utils/routing.dart';
 import 'package:abgtools/widgets/button_icon.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -184,9 +186,6 @@ abstract class PracticesView<T extends IIdentity,
     return Scaffold(
       body: Container(
         color: secondColor3,
-        padding: res.ResponsiveWidget.isSmallScreen(context)
-            ? EdgeInsets.only(top: 60, bottom: 0, left: 0, right: 0)
-            : EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
         child: Column(
           children: [
             Row(
@@ -212,8 +211,8 @@ abstract class PracticesView<T extends IIdentity,
               children: [
                 Expanded(
                   child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 0.0, horizontal: 15),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 0.0, horizontal: 15),
                     child: Text(practicesViewModel.Description(),
                         style: TextStyle(
                             fontSize: 12,
@@ -222,12 +221,19 @@ abstract class PracticesView<T extends IIdentity,
                             fontWeight: FontWeight.w500)),
                   ),
                 ),
+                InkWell(
+                    onTap: () async {
+                      await clearEnvirenment();
+                     await authService.init();
+                     Get.offAllNamed(loginViewRoute);
+                    },
+                    child: Text("Se déconnecter"))
               ],
             ),
             res.ResponsiveWidget.isSmallScreen(context)
                 ? Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 5.0, horizontal: 5),
                     color: Colors.transparent,
                     child: Column(
                       children: [
@@ -245,16 +251,17 @@ abstract class PracticesView<T extends IIdentity,
                                     borderRadius: BorderRadius.circular(6)),
                                 child: Row(
                                   children: [
-                                    Obx(() => practicesViewModel
-                                            .filterManger.isEmpty
-                                        ? const SizedBox()
-                                        : SizedBox(
-                                            height: 25,
-                                            child: SingleChildScrollView(
-                                                scrollDirection: Axis.horizontal,
-                                                child: Row(children: [
-                                                  buildFilterParts(),
-                                                ])))),
+                                    Obx(() =>
+                                        practicesViewModel.filterManger.isEmpty
+                                            ? const SizedBox()
+                                            : SizedBox(
+                                                height: 25,
+                                                child: SingleChildScrollView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    child: Row(children: [
+                                                      buildFilterParts(),
+                                                    ])))),
                                     Expanded(
                                       child: TextField(
                                         decoration: InputDecoration(
@@ -342,14 +349,15 @@ abstract class PracticesView<T extends IIdentity,
                             Row(
                               children: [
                                 Obx(
-                                  () => practicesViewModel.actionsCommands.isEmpty
+                                  () => practicesViewModel
+                                          .actionsCommands.isEmpty
                                       ? const SizedBox()
                                       : DropdownButtonHideUnderline(
                                           child: DropdownButton2(
                                             dropdownElevation: 1,
                                             buttonOverlayColor:
-                                                MaterialStateProperty.resolveWith(
-                                                    (states) {
+                                                MaterialStateProperty
+                                                    .resolveWith((states) {
                                               // If the button is pressed, return size 40, otherwise 20
                                               if (states.contains(
                                                       MaterialState.pressed) &&
@@ -401,7 +409,8 @@ abstract class PracticesView<T extends IIdentity,
                                 const SizedBox(
                                   width: 7,
                                 ),
-                                Obx(() => practicesViewModel.printCommands.isEmpty
+                                Obx(() => practicesViewModel
+                                        .printCommands.isEmpty
                                     ? const SizedBox()
                                     : DropdownButtonHideUnderline(
                                         child: DropdownButton2(
@@ -423,10 +432,12 @@ abstract class PracticesView<T extends IIdentity,
                                               text: "Printer",
                                               suffixImage: "dropdown.png"),
                                           dropdownWidth: 200,
-                                          items: practicesViewModel.printCommands
-                                              .map((item) =>
-                                                  DropdownMenuItem<RelayCommand>(
-                                                    enabled: item.canExecuteValue,
+                                          items: practicesViewModel
+                                              .printCommands
+                                              .map((item) => DropdownMenuItem<
+                                                      RelayCommand>(
+                                                    enabled:
+                                                        item.canExecuteValue,
                                                     value: item,
                                                     child: Text(
                                                       item.value,
@@ -441,7 +452,7 @@ abstract class PracticesView<T extends IIdentity,
                                                   ))
                                               .toList(),
                                           onChanged: (value) {
-                                          (value as RelayCommand).execute();
+                                            (value as RelayCommand).execute();
                                           },
                                           dropdownDecoration: BoxDecoration(
                                             borderRadius:
@@ -456,82 +467,79 @@ abstract class PracticesView<T extends IIdentity,
                                       )),
                               ],
                             ),
-                         
                             Obx(() => Row(
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            practicesViewModel.changeView(true);
-                                          },
-                                          padding: const EdgeInsets.all(3),
-                                          icon: practicesViewModel
-                                                  .listDisplay.value
-                                              ? Container(
-                                                  padding: EdgeInsets.all(5),
-                                                  decoration: BoxDecoration(
-                                                      color: secondColor,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              7.0)),
-                                                  child: Image.asset(
-                                                    "assets/images/whitelist.png",
-                                                    width: 25,
-                                                    height: 25,
-                                                  ),
-                                                )
-                                              : Container(
-                                                  padding: EdgeInsets.all(5),
-                                                  decoration: BoxDecoration(
-                                                      color: secondColor7,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              7.0)),
-                                                  child: Image.asset(
-                                                    "assets/images/list.png",
-                                                    width: 25,
-                                                    height: 25,
-                                                  ),
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        practicesViewModel.changeView(true);
+                                      },
+                                      padding: const EdgeInsets.all(3),
+                                      icon: practicesViewModel.listDisplay.value
+                                          ? Container(
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                  color: secondColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          7.0)),
+                                              child: Image.asset(
+                                                "assets/images/whitelist.png",
+                                                width: 25,
+                                                height: 25,
+                                              ),
+                                            )
+                                          : Container(
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                  color: secondColor7,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          7.0)),
+                                              child: Image.asset(
+                                                "assets/images/list.png",
+                                                width: 25,
+                                                height: 25,
+                                              ),
+                                            ),
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          practicesViewModel.changeView(false);
+                                        },
+                                        padding: const EdgeInsets.all(3),
+                                        icon: practicesViewModel
+                                                .listDisplay.value
+                                            ? Container(
+                                                padding: EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                    color: secondColor7,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7.0)),
+                                                child: Image.asset(
+                                                  "assets/images/column.png",
+                                                  width: 25,
+                                                  height: 25,
                                                 ),
-                                        ),
-                                        const SizedBox(
-                                          width: 7,
-                                        ),
-                                        IconButton(
-                                            onPressed: () {
-                                              practicesViewModel
-                                                  .changeView(false);
-                                            },
-                                            padding: const EdgeInsets.all(3),
-                                            icon: practicesViewModel
-                                                    .listDisplay.value
-                                                ? Container(
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                        color: secondColor7,
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                7.0)),
-                                                    child: Image.asset(
-                                                      "assets/images/column.png",
-                                                      width: 25,
-                                                      height: 25,
-                                                    ),
-                                                  )
-                                                : Container(
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                        color: secondColor,
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                7.0)),
-                                                    child: Image.asset(
-                                                      "assets/images/whitecolumn.png",
-                                                      width: 25,
-                                                      height: 25,
-                                                    ),
-                                                  )),
-                                      ],
-                                    ))
+                                              )
+                                            : Container(
+                                                padding: EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                    color: secondColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7.0)),
+                                                child: Image.asset(
+                                                  "assets/images/whitecolumn.png",
+                                                  width: 25,
+                                                  height: 25,
+                                                ),
+                                              )),
+                                  ],
+                                ))
                           ],
                         ),
                       ],
@@ -548,14 +556,15 @@ abstract class PracticesView<T extends IIdentity,
                             Row(
                               children: [
                                 Obx(
-                                  () => practicesViewModel.actionsCommands.isEmpty
+                                  () => practicesViewModel
+                                          .actionsCommands.isEmpty
                                       ? const SizedBox()
                                       : DropdownButtonHideUnderline(
                                           child: DropdownButton2(
                                             dropdownElevation: 1,
                                             buttonOverlayColor:
-                                                MaterialStateProperty.resolveWith(
-                                                    (states) {
+                                                MaterialStateProperty
+                                                    .resolveWith((states) {
                                               // If the button is pressed, return size 40, otherwise 20
                                               if (states.contains(
                                                       MaterialState.pressed) &&
@@ -607,7 +616,8 @@ abstract class PracticesView<T extends IIdentity,
                                 const SizedBox(
                                   width: 7,
                                 ),
-                                Obx(() => practicesViewModel.printCommands.isEmpty
+                                Obx(() => practicesViewModel
+                                        .printCommands.isEmpty
                                     ? const SizedBox()
                                     : DropdownButtonHideUnderline(
                                         child: DropdownButton2(
@@ -629,10 +639,12 @@ abstract class PracticesView<T extends IIdentity,
                                               text: "Printer",
                                               suffixImage: "dropdown.png"),
                                           dropdownWidth: 200,
-                                          items: practicesViewModel.printCommands
-                                              .map((item) =>
-                                                  DropdownMenuItem<RelayCommand>(
-                                                    enabled: item.canExecuteValue,
+                                          items: practicesViewModel
+                                              .printCommands
+                                              .map((item) => DropdownMenuItem<
+                                                      RelayCommand>(
+                                                    enabled:
+                                                        item.canExecuteValue,
                                                     value: item,
                                                     child: Text(
                                                       item.value,
@@ -679,7 +691,8 @@ abstract class PracticesView<T extends IIdentity,
                                           color: Colors.white,
                                           border: Border.all(
                                               width: 1, color: secondColor20),
-                                          borderRadius: BorderRadius.circular(6)),
+                                          borderRadius:
+                                              BorderRadius.circular(6)),
                                       child: Row(
                                         children: [
                                           Obx(() => practicesViewModel
@@ -709,28 +722,34 @@ abstract class PracticesView<T extends IIdentity,
                                                 hintText: 'Recherche',
                                                 border: OutlineInputBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(7.0),
+                                                      BorderRadius.circular(
+                                                          7.0),
                                                   borderSide: const BorderSide(
                                                     color: Colors.transparent,
                                                     width: 0.0,
                                                   ),
                                                 ),
-                                                focusedBorder: OutlineInputBorder(
+                                                focusedBorder:
+                                                    OutlineInputBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(7.0),
+                                                      BorderRadius.circular(
+                                                          7.0),
                                                   borderSide: const BorderSide(
                                                     color: Colors.transparent,
                                                     width: 0.0,
                                                   ),
                                                 ),
-                                                enabledBorder: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            7.0),
-                                                    borderSide: const BorderSide(
-                                                      color: Colors.transparent,
-                                                      width: 0.0,
-                                                    )),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(7.0),
+                                                        borderSide:
+                                                            const BorderSide(
+                                                          color: Colors
+                                                              .transparent,
+                                                          width: 0.0,
+                                                        )),
                                               ),
                                               controller:
                                                   practicesViewModel.filter,
@@ -754,331 +773,10 @@ abstract class PracticesView<T extends IIdentity,
                                                   raduiseButton: 6,
                                                   activeColors:
                                                       Colors.transparent,
-                                                  hoverColors: Colors.transparent,
-                                                  mainColors: Colors.transparent,
-                                                  onPressed: () {
-                                                    practicesViewModel
-                                                        .initialize();
-                                                  }),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    practicesViewModel.filterManger.isEmpty
-                                        ? SizedBox()
-                                        : SizedBox(
-                                            width: 7,
-                                          ),
-                                    practicesViewModel.filterManger.isEmpty
-                                        ? SizedBox()
-                                        : FilterOptionView(
-                                            practicesViewModel:
-                                                practicesViewModel),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 7,
-                                ),
-                                
-                                   Obx(() => Row(
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            practicesViewModel.changeView(true);
-                                          },
-                                          padding: const EdgeInsets.all(3),
-                                          icon: practicesViewModel
-                                                  .listDisplay.value
-                                              ? Container(
-                                                  padding: EdgeInsets.all(5),
-                                                  decoration: BoxDecoration(
-                                                      color: secondColor,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              7.0)),
-                                                  child: Image.asset(
-                                                    "assets/images/whitelist.png",
-                                                    width: 25,
-                                                    height: 25,
-                                                  ),
-                                                )
-                                              : Container(
-                                                  padding: EdgeInsets.all(5),
-                                                  decoration: BoxDecoration(
-                                                      color: secondColor7,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              7.0)),
-                                                  child: Image.asset(
-                                                    "assets/images/list.png",
-                                                    width: 25,
-                                                    height: 25,
-                                                  ),
-                                                ),
-                                        ),
-                                        const SizedBox(
-                                          width: 7,
-                                        ),
-                                        IconButton(
-                                            onPressed: () {
-                                              practicesViewModel
-                                                  .changeView(false);
-                                            },
-                                            padding: const EdgeInsets.all(3),
-                                            icon: practicesViewModel
-                                                    .listDisplay.value
-                                                ? Container(
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                        color: secondColor7,
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                7.0)),
-                                                    child: Image.asset(
-                                                      "assets/images/column.png",
-                                                      width: 25,
-                                                      height: 25,
-                                                    ),
-                                                  )
-                                                : Container(
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                        color: secondColor,
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                7.0)),
-                                                    child: Image.asset(
-                                                      "assets/images/whitecolumn.png",
-                                                      width: 25,
-                                                      height: 25,
-                                                    ),
-                                                  )),
-                                      ],
-                                    ))
-                                 ],
-                            ),
-                          ],
-                        ),
-                      )
-                    : Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5.0, horizontal: 15),
-                        color: Colors.transparent,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Obx(
-                                  () => practicesViewModel.actionsCommands.isEmpty
-                                      ? const SizedBox()
-                                      : DropdownButtonHideUnderline(
-                                          child: DropdownButton2(
-                                            dropdownElevation: 1,
-                                            buttonOverlayColor:
-                                                MaterialStateProperty.resolveWith(
-                                                    (states) {
-                                              // If the button is pressed, return size 40, otherwise 20
-                                              if (states.contains(
-                                                      MaterialState.pressed) &&
-                                                  states.contains(
-                                                      MaterialState.pressed)) {
-                                                return Colors.transparent;
-                                              }
-                                              return Colors.transparent;
-                                            }),
-                                            customButton: CustomButtonDropDown(
-                                                preImage: "action.png",
-                                                text: "Action",
-                                                suffixImage: "dropdown.png"),
-                                            dropdownWidth: 200,
-                                            items: practicesViewModel
-                                                .actionsCommands
-                                                .map((item) => DropdownMenuItem<
-                                                        RelayCommand>(
-                                                      enabled:
-                                                          item.canExecuteValue,
-                                                      value: item,
-                                                      child: Text(
-                                                        item.value,
-                                                        style: TextStyle(
-                                                          fontSize: 13,
-                                                          color:
-                                                              item.canExecuteValue
-                                                                  ? Colors.black
-                                                                  : Colors.grey,
-                                                        ),
-                                                      ),
-                                                    ))
-                                                .toList(),
-                                            onChanged: (value) {
-                                              (value as RelayCommand).execute();
-                                            },
-                                            dropdownDecoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(3),
-                                              color: Colors.white,
-                                            ),
-                                            dropdownPadding:
-                                                const EdgeInsets.all(0),
-                                            buttonHeight: 35,
-                                            itemHeight: 35,
-                                          ),
-                                        ),
-                                ),
-                                const SizedBox(
-                                  width: 7,
-                                ),
-                                Obx(() => practicesViewModel.printCommands.isEmpty
-                                    ? const SizedBox()
-                                    : DropdownButtonHideUnderline(
-                                        child: DropdownButton2(
-                                          dropdownElevation: 1,
-                                          buttonOverlayColor:
-                                              MaterialStateProperty.resolveWith(
-                                                  (states) {
-                                            // If the button is pressed, return size 40, otherwise 20
-                                            if (states.contains(
-                                                    MaterialState.pressed) &&
-                                                states.contains(
-                                                    MaterialState.pressed)) {
-                                              return Colors.transparent;
-                                            }
-                                            return Colors.transparent;
-                                          }),
-                                          customButton: CustomButtonDropDown(
-                                              preImage: "printer.png",
-                                              text: "Printer",
-                                              suffixImage: "dropdown.png"),
-                                          dropdownWidth: 200,
-                                          items: practicesViewModel.printCommands
-                                              .map((item) =>
-                                                  DropdownMenuItem<RelayCommand>(
-                                                    enabled: item.canExecuteValue,
-                                                    value: item,
-                                                    child: Text(
-                                                      item.value,
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        color:
-                                                            item.canExecuteValue
-                                                                ? Colors.black
-                                                                : Colors.grey,
-                                                      ),
-                                                    ),
-                                                  ))
-                                              .toList(),
-                                          onChanged: (value) {
-                                            (value as RelayCommand).execute();
-                                          },
-                                          dropdownDecoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(3),
-                                            color: Colors.white,
-                                          ),
-                                          dropdownPadding:
-                                              const EdgeInsets.all(0),
-                                          buttonHeight: 40,
-                                          itemHeight: 35,
-                                        ),
-                                      )),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 7),
-                                      height: 33,
-                                      width:
-                                          MediaQuery.of(context).size.width > 600
-                                              ? 450
-                                              : MediaQuery.of(context).size.width,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              width: 1, color: secondColor20),
-                                          borderRadius: BorderRadius.circular(6)),
-                                      child: Row(
-                                        children: [
-                                          Obx(() => practicesViewModel
-                                                  .filterManger.isEmpty
-                                              ? const SizedBox()
-                                              : SizedBox(
-                                                  height: 25,
-                                                  child: SingleChildScrollView(
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      child: Row(children: [
-                                                        buildFilterParts(),
-                                                      ])))),
-                                          Expanded(
-                                            child: TextField(
-                                              decoration: InputDecoration(
-                                                fillColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                prefixStyle: const TextStyle(
-                                                    color: Colors.black),
-                                                filled: true,
-                                                contentPadding:
-                                                    const EdgeInsets.all(0.0),
-                                                hintStyle: const TextStyle(
-                                                    color: Colors.black87,
-                                                    fontSize: 12),
-                                                hintText: 'Recherche',
-                                                border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(7.0),
-                                                  borderSide: const BorderSide(
-                                                    color: Colors.transparent,
-                                                    width: 0.0,
-                                                  ),
-                                                ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(7.0),
-                                                  borderSide: const BorderSide(
-                                                    color: Colors.transparent,
-                                                    width: 0.0,
-                                                  ),
-                                                ),
-                                                enabledBorder: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            7.0),
-                                                    borderSide: const BorderSide(
-                                                      color: Colors.transparent,
-                                                      width: 0.0,
-                                                    )),
-                                              ),
-                                              controller:
-                                                  practicesViewModel.filter,
-                                              onSubmitted: (value) {
-                                                practicesViewModel.initialize();
-                                              },
-                                              keyboardType: TextInputType.text,
-                                              style:
-                                                  const TextStyle(fontSize: 14),
-                                              autocorrect: false,
-                                            ),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              IconButtonCustom(
-                                                  iconName: "searchicon.png",
-                                                  height: 30,
-                                                  width: 30,
-                                                  raduiseButton: 6,
-                                                  activeColors:
+                                                  hoverColors:
                                                       Colors.transparent,
-                                                  hoverColors: Colors.transparent,
-                                                  mainColors: Colors.transparent,
+                                                  mainColors:
+                                                      Colors.transparent,
                                                   onPressed: () {
                                                     practicesViewModel
                                                         .initialize();
@@ -1155,8 +853,8 @@ abstract class PracticesView<T extends IIdentity,
                                                     decoration: BoxDecoration(
                                                         color: secondColor7,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                7.0)),
+                                                            BorderRadius
+                                                                .circular(7.0)),
                                                     child: Image.asset(
                                                       "assets/images/column.png",
                                                       width: 25,
@@ -1168,8 +866,343 @@ abstract class PracticesView<T extends IIdentity,
                                                     decoration: BoxDecoration(
                                                         color: secondColor,
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                7.0)),
+                                                            BorderRadius
+                                                                .circular(7.0)),
+                                                    child: Image.asset(
+                                                      "assets/images/whitecolumn.png",
+                                                      width: 25,
+                                                      height: 25,
+                                                    ),
+                                                  )),
+                                      ],
+                                    ))
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5.0, horizontal: 15),
+                        color: Colors.transparent,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Obx(
+                                  () => practicesViewModel
+                                          .actionsCommands.isEmpty
+                                      ? const SizedBox()
+                                      : DropdownButtonHideUnderline(
+                                          child: DropdownButton2(
+                                            dropdownElevation: 1,
+                                            buttonOverlayColor:
+                                                MaterialStateProperty
+                                                    .resolveWith((states) {
+                                              // If the button is pressed, return size 40, otherwise 20
+                                              if (states.contains(
+                                                      MaterialState.pressed) &&
+                                                  states.contains(
+                                                      MaterialState.pressed)) {
+                                                return Colors.transparent;
+                                              }
+                                              return Colors.transparent;
+                                            }),
+                                            customButton: CustomButtonDropDown(
+                                                preImage: "action.png",
+                                                text: "Action",
+                                                suffixImage: "dropdown.png"),
+                                            dropdownWidth: 200,
+                                            items: practicesViewModel
+                                                .actionsCommands
+                                                .map((item) => DropdownMenuItem<
+                                                        RelayCommand>(
+                                                      enabled:
+                                                          item.canExecuteValue,
+                                                      value: item,
+                                                      child: Text(
+                                                        item.value,
+                                                        style: TextStyle(
+                                                          fontSize: 13,
+                                                          color:
+                                                              item.canExecuteValue
+                                                                  ? Colors.black
+                                                                  : Colors.grey,
+                                                        ),
+                                                      ),
+                                                    ))
+                                                .toList(),
+                                            onChanged: (value) {
+                                              (value as RelayCommand).execute();
+                                            },
+                                            dropdownDecoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(3),
+                                              color: Colors.white,
+                                            ),
+                                            dropdownPadding:
+                                                const EdgeInsets.all(0),
+                                            buttonHeight: 35,
+                                            itemHeight: 35,
+                                          ),
+                                        ),
+                                ),
+                                const SizedBox(
+                                  width: 7,
+                                ),
+                                Obx(() => practicesViewModel
+                                        .printCommands.isEmpty
+                                    ? const SizedBox()
+                                    : DropdownButtonHideUnderline(
+                                        child: DropdownButton2(
+                                          dropdownElevation: 1,
+                                          buttonOverlayColor:
+                                              MaterialStateProperty.resolveWith(
+                                                  (states) {
+                                            // If the button is pressed, return size 40, otherwise 20
+                                            if (states.contains(
+                                                    MaterialState.pressed) &&
+                                                states.contains(
+                                                    MaterialState.pressed)) {
+                                              return Colors.transparent;
+                                            }
+                                            return Colors.transparent;
+                                          }),
+                                          customButton: CustomButtonDropDown(
+                                              preImage: "printer.png",
+                                              text: "Printer",
+                                              suffixImage: "dropdown.png"),
+                                          dropdownWidth: 200,
+                                          items: practicesViewModel
+                                              .printCommands
+                                              .map((item) => DropdownMenuItem<
+                                                      RelayCommand>(
+                                                    enabled:
+                                                        item.canExecuteValue,
+                                                    value: item,
+                                                    child: Text(
+                                                      item.value,
+                                                      style: TextStyle(
+                                                        fontSize: 13,
+                                                        color:
+                                                            item.canExecuteValue
+                                                                ? Colors.black
+                                                                : Colors.grey,
+                                                      ),
+                                                    ),
+                                                  ))
+                                              .toList(),
+                                          onChanged: (value) {
+                                            (value as RelayCommand).execute();
+                                          },
+                                          dropdownDecoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                            color: Colors.white,
+                                          ),
+                                          dropdownPadding:
+                                              const EdgeInsets.all(0),
+                                          buttonHeight: 40,
+                                          itemHeight: 35,
+                                        ),
+                                      )),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 7),
+                                      height: 33,
+                                      width: MediaQuery.of(context).size.width >
+                                              600
+                                          ? 450
+                                          : MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1, color: secondColor20),
+                                          borderRadius:
+                                              BorderRadius.circular(6)),
+                                      child: Row(
+                                        children: [
+                                          Obx(() => practicesViewModel
+                                                  .filterManger.isEmpty
+                                              ? const SizedBox()
+                                              : SizedBox(
+                                                  height: 25,
+                                                  child: SingleChildScrollView(
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      child: Row(children: [
+                                                        buildFilterParts(),
+                                                      ])))),
+                                          Expanded(
+                                            child: TextField(
+                                              decoration: InputDecoration(
+                                                fillColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                prefixStyle: const TextStyle(
+                                                    color: Colors.black),
+                                                filled: true,
+                                                contentPadding:
+                                                    const EdgeInsets.all(0.0),
+                                                hintStyle: const TextStyle(
+                                                    color: Colors.black87,
+                                                    fontSize: 12),
+                                                hintText: 'Recherche',
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          7.0),
+                                                  borderSide: const BorderSide(
+                                                    color: Colors.transparent,
+                                                    width: 0.0,
+                                                  ),
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          7.0),
+                                                  borderSide: const BorderSide(
+                                                    color: Colors.transparent,
+                                                    width: 0.0,
+                                                  ),
+                                                ),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(7.0),
+                                                        borderSide:
+                                                            const BorderSide(
+                                                          color: Colors
+                                                              .transparent,
+                                                          width: 0.0,
+                                                        )),
+                                              ),
+                                              controller:
+                                                  practicesViewModel.filter,
+                                              onSubmitted: (value) {
+                                                practicesViewModel.initialize();
+                                              },
+                                              keyboardType: TextInputType.text,
+                                              style:
+                                                  const TextStyle(fontSize: 14),
+                                              autocorrect: false,
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              IconButtonCustom(
+                                                  iconName: "searchicon.png",
+                                                  height: 30,
+                                                  width: 30,
+                                                  raduiseButton: 6,
+                                                  activeColors:
+                                                      Colors.transparent,
+                                                  hoverColors:
+                                                      Colors.transparent,
+                                                  mainColors:
+                                                      Colors.transparent,
+                                                  onPressed: () {
+                                                    practicesViewModel
+                                                        .initialize();
+                                                  }),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    practicesViewModel.filterManger.isEmpty
+                                        ? SizedBox()
+                                        : SizedBox(
+                                            width: 7,
+                                          ),
+                                    practicesViewModel.filterManger.isEmpty
+                                        ? SizedBox()
+                                        : FilterOptionView(
+                                            practicesViewModel:
+                                                practicesViewModel),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  width: 7,
+                                ),
+                                Obx(() => Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            practicesViewModel.changeView(true);
+                                          },
+                                          padding: const EdgeInsets.all(3),
+                                          icon: practicesViewModel
+                                                  .listDisplay.value
+                                              ? Container(
+                                                  padding: EdgeInsets.all(5),
+                                                  decoration: BoxDecoration(
+                                                      color: secondColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              7.0)),
+                                                  child: Image.asset(
+                                                    "assets/images/whitelist.png",
+                                                    width: 25,
+                                                    height: 25,
+                                                  ),
+                                                )
+                                              : Container(
+                                                  padding: EdgeInsets.all(5),
+                                                  decoration: BoxDecoration(
+                                                      color: secondColor7,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              7.0)),
+                                                  child: Image.asset(
+                                                    "assets/images/list.png",
+                                                    width: 25,
+                                                    height: 25,
+                                                  ),
+                                                ),
+                                        ),
+                                        const SizedBox(
+                                          width: 7,
+                                        ),
+                                        IconButton(
+                                            onPressed: () {
+                                              practicesViewModel
+                                                  .changeView(false);
+                                            },
+                                            padding: const EdgeInsets.all(3),
+                                            icon: practicesViewModel
+                                                    .listDisplay.value
+                                                ? Container(
+                                                    padding: EdgeInsets.all(5),
+                                                    decoration: BoxDecoration(
+                                                        color: secondColor7,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(7.0)),
+                                                    child: Image.asset(
+                                                      "assets/images/column.png",
+                                                      width: 25,
+                                                      height: 25,
+                                                    ),
+                                                  )
+                                                : Container(
+                                                    padding: EdgeInsets.all(5),
+                                                    decoration: BoxDecoration(
+                                                        color: secondColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(7.0)),
                                                     child: Image.asset(
                                                       "assets/images/whitecolumn.png",
                                                       width: 25,
@@ -1197,15 +1230,15 @@ abstract class PracticesView<T extends IIdentity,
                                   color: Colors.grey.shade100,
                                   border: res.ResponsiveWidget.isSmallScreen(
                                           context)
-                                      ? Border.all(width: 1, color: secondColor20)
-                                      :  Border(
-                                              bottom: BorderSide(
-                                                  width: 1, color: secondColor20),
-                                              top: BorderSide(
-                                                  width: 1, color: secondColor20),
-                                              left: BorderSide(
-                                                  width: 1, color: secondColor20))
-                                          ),
+                                      ? Border.all(
+                                          width: 1, color: secondColor20)
+                                      : Border(
+                                          bottom: BorderSide(
+                                              width: 1, color: secondColor20),
+                                          top: BorderSide(
+                                              width: 1, color: secondColor20),
+                                          left: BorderSide(
+                                              width: 1, color: secondColor20))),
                               child: Column(children: [
                                 Obx(() => practicesViewModel.loading.value
                                     ? Expanded(
@@ -1219,83 +1252,80 @@ abstract class PracticesView<T extends IIdentity,
                                         ? Expanded(child: _buildStack(context))
                                         //list of card content
                                         : Expanded(
-                                            child: practicesViewModel.isBusy.value
-                                                ? const SpinKitCircle(
-                                                    color: Colors.amber,
-                                                    size: 30.0,
-                                                  )
-                                                : practicesViewModel
-                                                        .source.isEmpty
-                                                    ? Center(
-                                                        child: Icon(
-                                                          MdiIcons.formatListText,
-                                                          color: Colors.grey
-                                                              .withOpacity(0.5),
-                                                          size: 200,
-                                                        ),
+                                            child:
+                                                practicesViewModel.isBusy.value
+                                                    ? const SpinKitCircle(
+                                                        color: Colors.amber,
+                                                        size: 30.0,
                                                       )
-                                                    : SingleChildScrollView(
-                                                        child: ResponsiveGridRow(
-                                                            children: [
-                                                              for (int i = 0;
-                                                                  i <
-                                                                      practicesViewModel
-                                                                          .source
-                                                                          .length;
-                                                                  i++)
-                                                                ResponsiveGridCol(
-                                                                  xs: practicesViewModel
-                                                                      .xs,
-                                                                  md: practicesViewModel
-                                                                      .md,
-                                                                  sm: practicesViewModel
-                                                                      .sm,
-                                                                  lg: practicesViewModel
-                                                                      .lg,
-                                                                  xl: practicesViewModel
-                                                                      .xl,
-                                                                  child: InkWell(
-                                                                    borderRadius: const BorderRadius
-                                                                            .all(
-                                                                        Radius.circular(
-                                                                            10)),
-                                                                    overlayColor: MaterialStateProperty.all<
-                                                                            Color>(
-                                                                        Colors
+                                                    : practicesViewModel
+                                                            .source.isEmpty
+                                                        ? Center(
+                                                            child: Icon(
+                                                              MdiIcons
+                                                                  .formatListText,
+                                                              color: Colors.grey
+                                                                  .withOpacity(
+                                                                      0.5),
+                                                              size: 200,
+                                                            ),
+                                                          )
+                                                        : SingleChildScrollView(
+                                                            child:
+                                                                ResponsiveGridRow(
+                                                                    children: [
+                                                                  for (int i =
+                                                                          0;
+                                                                      i <
+                                                                          practicesViewModel
+                                                                              .source
+                                                                              .length;
+                                                                      i++)
+                                                                    ResponsiveGridCol(
+                                                                      xs: practicesViewModel
+                                                                          .xs,
+                                                                      md: practicesViewModel
+                                                                          .md,
+                                                                      sm: practicesViewModel
+                                                                          .sm,
+                                                                      lg: practicesViewModel
+                                                                          .lg,
+                                                                      xl: practicesViewModel
+                                                                          .xl,
+                                                                      child:
+                                                                          InkWell(
+                                                                        borderRadius:
+                                                                            const BorderRadius.all(Radius.circular(10)),
+                                                                        overlayColor: MaterialStateProperty.all<Color>(Colors
                                                                             .grey
-                                                                            .withOpacity(
-                                                                                0.5)),
-                                                                    onTap: () {
-                                                                      practicesViewModel
-                                                                          .openDetail(
-                                                                              practicesViewModel.source[i]);
-                                                                    },
-                                                                    onLongPress:
-                                                                        () {
-                                                                      practicesViewModel
-                                                                          .onSelectedChanged(
-                                                                              [
-                                                                            practicesViewModel
-                                                                                .source[i]
-                                                                          ],
-                                                                              [
-                                                                            practicesViewModel
-                                                                                .source[i]
+                                                                            .withOpacity(0.5)),
+                                                                        onTap:
+                                                                            () {
+                                                                          practicesViewModel
+                                                                              .openDetail(practicesViewModel.source[i]);
+                                                                        },
+                                                                        onLongPress:
+                                                                            () {
+                                                                          practicesViewModel
+                                                                              .onSelectedChanged([
+                                                                            practicesViewModel.source[i]
+                                                                          ], [
+                                                                            practicesViewModel.source[i]
                                                                           ]);
-                                                                    },
-                                                                    child: Container(
-                                                                        decoration: BoxDecoration(
-                                                                            borderRadius: BorderRadius.circular(5.0),
-                                                                            color: !practicesViewModel.selectedItems.contains(practicesViewModel.source[i]) ? Colors.white : secondColor7,
-                                                                            //color: Colors.white,
-                                                                            border: Border.all(width: 0.6, color: secondColor20)),
-                                                                        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                                                                        padding: EdgeInsets.all(5.0),
-                                                                        child: buildCardContent(context, practicesViewModel.source[i])),
-                                                                  ),
-                                                                ),
-                                                            ]),
-                                                      ))),
+                                                                        },
+                                                                        child: Container(
+                                                                            decoration: BoxDecoration(
+                                                                                borderRadius: BorderRadius.circular(5.0),
+                                                                                color: !practicesViewModel.selectedItems.contains(practicesViewModel.source[i]) ? Colors.white : secondColor7,
+                                                                                //color: Colors.white,
+                                                                                border: Border.all(width: 0.6, color: secondColor20)),
+                                                                            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                                                                            padding: EdgeInsets.all(5.0),
+                                                                            child: buildCardContent(context, practicesViewModel.source[i])),
+                                                                      ),
+                                                                    ),
+                                                                ]),
+                                                          ))),
                               ])),
                         ),
                         Obx(() => Container(
@@ -1315,7 +1345,8 @@ abstract class PracticesView<T extends IIdentity,
                                 pageCount:
                                     practicesViewModel.totalPages.toDouble(),
                                 navigationItemHeight: 30,
-                                initialPageIndex: 0,
+                                initialPageIndex: 1,
+
                                 itemHeight: 30,
                                 itemWidth: 30,
                                 direction: Axis.horizontal,
@@ -1330,7 +1361,8 @@ abstract class PracticesView<T extends IIdentity,
                               left: 10.0, right: 10, bottom: 10),
                           decoration: BoxDecoration(
                               color: Colors.white,
-                              border: Border.all(width: 1, color: secondColor20)),
+                              border:
+                                  Border.all(width: 1, color: secondColor20)),
                           width: 300,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -1341,8 +1373,7 @@ abstract class PracticesView<T extends IIdentity,
                                 Row(
                                   children: [
                                     IconButtonCustom(
-                                        iconName: "popup-arow-ar.png"
-                                               ,
+                                        iconName: "popup-arow-ar.png",
                                         mainColors: primaryColor,
                                         hoverColors: primaryColor,
                                         activeColors: primaryColor,
@@ -1369,9 +1400,10 @@ abstract class PracticesView<T extends IIdentity,
                                             filled: true,
                                             hintText: 'يحث',
                                             counter: const SizedBox.shrink(),
-                                            contentPadding: EdgeInsets.symmetric(
-                                                vertical:8,
-                                                horizontal: 10.0),
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 8,
+                                                    horizontal: 10.0),
                                             isDense: true,
                                             border: OutlineInputBorder(
                                               borderRadius:
@@ -1397,11 +1429,13 @@ abstract class PracticesView<T extends IIdentity,
                                                   width: 2.0,
                                                 )),
                                             suffixIcon: Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 5.0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5.0),
                                               child: IconButtonCustom(
                                                 mainColors: Colors.transparent,
-                                                activeColors: Colors.transparent,
+                                                activeColors:
+                                                    Colors.transparent,
                                                 hoverColors: Colors.transparent,
                                                 iconName: "searchbyfilter.png",
                                                 height: 30,
@@ -1427,21 +1461,22 @@ abstract class PracticesView<T extends IIdentity,
                                     ),
                                   ],
                                 ),
-                                Obx(() => practicesViewModel.displayCards.isEmpty
-                                    ? Center(
-                                        child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text("cartes vides"),
-                                      ))
-                                    : Expanded(
-                                        child: ListView.builder(
-                                            itemCount: practicesViewModel
-                                                .displayCards.length,
-                                            itemBuilder: ((context, index) {
-                                              return practicesViewModel
-                                                  .displayCards[index].view;
-                                            })),
-                                      )),
+                                Obx(() =>
+                                    practicesViewModel.displayCards.isEmpty
+                                        ? Center(
+                                            child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text("cartes vides"),
+                                          ))
+                                        : Expanded(
+                                            child: ListView.builder(
+                                                itemCount: practicesViewModel
+                                                    .displayCards.length,
+                                                itemBuilder: ((context, index) {
+                                                  return practicesViewModel
+                                                      .displayCards[index].view;
+                                                })),
+                                          )),
                               ],
                             ),
                           ),

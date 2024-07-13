@@ -23,5 +23,6 @@ class AuthService extends GetxService {
 
     // env = env = (await getEnvirenment())?? EnvrinementModel(access_token: '', lisenceType: 0, permissions: [], token_type: '', user: User(city: 0, email: '', id: 0, name: '', organization: '', role: 0));
     env = await getEnvirenment();
+    
   }
 }

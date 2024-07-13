@@ -55,7 +55,7 @@ abstract class PracticesViewModel<T extends IIdentity>
     _TitleKey = titleKey;
     _DescriptionKey = "${titleKey}_description";
     dataGridSource = PracticesDataGridSource<T>(parent: this);
-    currentPage = 1;
+    currentPage = 0;
     totalPages.value = 1;
     pageSizeGride = 0;
     totalItems = 0;
@@ -265,7 +265,7 @@ abstract class PracticesViewModel<T extends IIdentity>
 
   changerPerPage(int itemsPerPage) {
     pageSize = itemsPerPage;
-    currentPage = 1;
+    currentPage = 0;
     load();
   }
 

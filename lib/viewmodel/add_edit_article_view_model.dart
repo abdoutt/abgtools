@@ -28,6 +28,7 @@ class AddEditArticleViewModel extends CRUDViewModel<ArticleModel> {
   TextEditingController lavageController = TextEditingController();
   TextEditingController coutController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController prixVentController = TextEditingController();
   DateTime createdAt = DateTime.now();
 
   AddEditArticleViewModel(super.t, super.e, super.p) {
@@ -51,6 +52,7 @@ class AddEditArticleViewModel extends CRUDViewModel<ArticleModel> {
     PrixtrouController.text = entity.prixTrou.toString();
     nameController.text = entity.name;
     createdAt = entity.createdAt;
+    prixVentController.text = entity.prixVent.toString();
   }
 
   @override
@@ -109,10 +111,26 @@ class AddEditArticleViewModel extends CRUDViewModel<ArticleModel> {
     serviceController.text = temp.service.toString();
     coutController.text = temp.cout.toString();
     trouController.text = temp.trou.toString();
-     PrixtrouController.text = temp.prixTrou.toString();
+    PrixtrouController.text = temp.prixTrou.toString();
     nameController.text = temp.name;
+    prixVentController.text = temp.prixVent.toString();
     createdAt = temp.createdAt;
     return temp;
+  }
+
+  chengePrixVent() {
+    prixVentController.text = (((double.parse(surfaceController.text) +
+                    (double.parse(surfaceController.text) * 0.15)) *
+                double.parse(coutController.text)) +
+            double.parse(electriciteController.text) +
+            double.parse(faconnageController.text) +
+            double.parse(lavageController.text) +
+            double.parse(trempController.text) +
+            (int.parse(trouController.text) *
+                double.parse(PrixtrouController.text)) +
+            double.parse(serviceController.text) +
+            double.parse(serigraphieController.text))
+        .toString();
   }
 
   @override
@@ -136,19 +154,13 @@ class AddEditArticleViewModel extends CRUDViewModel<ArticleModel> {
     entity.tableCoup = double.parse(tableCoupController.text);
     entity.tremp = double.parse(trempController.text);
     entity.cout = double.parse(coutController.text);
-    entity.trou = double.parse(trouController.text);
+    entity.trou = int.parse(trouController.text);
+    entity.service = double.parse(serviceController.text);
     entity.prixTrou = double.parse(PrixtrouController.text);
     entity.serigraphie = double.parse(serigraphieController.text);
     entity.createdAt = createdAt;
-    entity.prixVent =
-        ((entity.surface + (entity.surface * 0.15)) * entity.cout) +
-            entity.electricite +
-            entity.faconnage +
-            entity.lavage +
-            entity.tremp +
-            (entity.trou * entity.prixTrou) +
-            entity.service +
-            entity.serigraphie;
+    entity.prixVent = double.parse(prixVentController.text);
+
     //Todo save API methodes
     try {
       var id = entity.id == 0

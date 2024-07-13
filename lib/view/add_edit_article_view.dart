@@ -519,6 +519,9 @@ class AddEditArticleView extends CRUDView<AddEditArticleViewModel> {
               controller: super.crudViewModel.coutController,
               style: const TextStyle(fontSize: 13),
               keyboardType: TextInputType.number,
+              onChanged: (value) {
+                super.crudViewModel.chengePrixVent();
+              },
               autocorrect: false,
             ),
             Container(
@@ -818,6 +821,9 @@ class AddEditArticleView extends CRUDView<AddEditArticleViewModel> {
                         controller: super.crudViewModel.electriciteController,
                         style: const TextStyle(fontSize: 13),
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          super.crudViewModel.chengePrixVent();
+                        },
                         autocorrect: false,
                       ),
                     ],
@@ -884,6 +890,9 @@ class AddEditArticleView extends CRUDView<AddEditArticleViewModel> {
                         controller: super.crudViewModel.faconnageController,
                         style: const TextStyle(fontSize: 13),
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          super.crudViewModel.chengePrixVent();
+                        },
                         autocorrect: false,
                       ),
                     ],
@@ -949,6 +958,9 @@ class AddEditArticleView extends CRUDView<AddEditArticleViewModel> {
                         controller: super.crudViewModel.tableCoupController,
                         style: const TextStyle(fontSize: 13),
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          super.crudViewModel.chengePrixVent();
+                        },
                         autocorrect: false,
                       ),
                     ],
@@ -1015,6 +1027,9 @@ class AddEditArticleView extends CRUDView<AddEditArticleViewModel> {
                         controller: super.crudViewModel.lavageController,
                         style: const TextStyle(fontSize: 13),
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          super.crudViewModel.chengePrixVent();
+                        },
                         autocorrect: false,
                       ),
                     ],
@@ -1080,6 +1095,9 @@ class AddEditArticleView extends CRUDView<AddEditArticleViewModel> {
                         controller: super.crudViewModel.serigraphieController,
                         style: const TextStyle(fontSize: 13),
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          super.crudViewModel.chengePrixVent();
+                        },
                         autocorrect: false,
                       ),
                     ],
@@ -1146,6 +1164,9 @@ class AddEditArticleView extends CRUDView<AddEditArticleViewModel> {
                         controller: super.crudViewModel.serviceController,
                         style: const TextStyle(fontSize: 13),
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          super.crudViewModel.chengePrixVent();
+                        },
                         autocorrect: false,
                       ),
                     ],
@@ -1211,6 +1232,9 @@ class AddEditArticleView extends CRUDView<AddEditArticleViewModel> {
                         controller: super.crudViewModel.trempController,
                         style: const TextStyle(fontSize: 13),
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          super.crudViewModel.chengePrixVent();
+                        },
                         autocorrect: false,
                       ),
                     ],
@@ -1277,6 +1301,9 @@ class AddEditArticleView extends CRUDView<AddEditArticleViewModel> {
                         controller: super.crudViewModel.trouController,
                         style: const TextStyle(fontSize: 13),
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          super.crudViewModel.chengePrixVent();
+                        },
                         autocorrect: false,
                       ),
                     ],
@@ -1285,56 +1312,138 @@ class AddEditArticleView extends CRUDView<AddEditArticleViewModel> {
               ],
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 7.0, bottom: 7.0),
-                    child: Text(
-                      "Prix de trou",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13,
-                          color: secondColor75),
-                    ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 7.0, bottom: 7.0),
+                              child: Text(
+                                "Prix de trou",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    color: secondColor75),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          errorStyle: const TextStyle(
+                            fontSize: 10,
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10.0),
+                          isDense: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(3.0),
+                            borderSide: BorderSide(
+                              color: secondColor7,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(3.0),
+                            borderSide: BorderSide(
+                              color: secondColor20,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(3.0),
+                              borderSide: BorderSide(
+                                color: secondColor20,
+                                width: 1.0,
+                              )),
+                        ),
+                        controller: super.crudViewModel.PrixtrouController,
+                        style: const TextStyle(fontSize: 13),
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          super.crudViewModel.chengePrixVent();
+                        },
+                        autocorrect: false,
+                      ),
+                    ],
+                  ),
+                ),
+                ResponsiveWidget.isSmallScreen(context)
+                    ? SizedBox(
+                        width: 5,
+                      )
+                    : SizedBox(
+                        width: 20,
+                      ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 7.0, bottom: 7.0),
+                              child: Text(
+                                "Prix de vent",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    color: secondColor75),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          errorStyle: const TextStyle(
+                            fontSize: 10,
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10.0),
+                          isDense: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(3.0),
+                            borderSide: BorderSide(
+                              color: secondColor7,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(3.0),
+                            borderSide: BorderSide(
+                              color: secondColor20,
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(3.0),
+                              borderSide: BorderSide(
+                                color: secondColor20,
+                                width: 1.0,
+                              )),
+                        ),
+                        controller: super.crudViewModel.prixVentController,
+                        style: const TextStyle(fontSize: 13),
+                        keyboardType: TextInputType.number,
+                        autocorrect: false,
+                      ),
+                    ],
                   ),
                 ),
               ],
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                errorStyle: const TextStyle(
-                  fontSize: 10,
-                ),
-                fillColor: Colors.white,
-                filled: true,
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 10.0),
-                isDense: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(3.0),
-                  borderSide: BorderSide(
-                    color: secondColor7,
-                    width: 1.0,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(3.0),
-                  borderSide: BorderSide(
-                    color: secondColor20,
-                    width: 1.0,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(3.0),
-                    borderSide: BorderSide(
-                      color: secondColor20,
-                      width: 1.0,
-                    )),
-              ),
-              controller: super.crudViewModel.PrixtrouController,
-              style: const TextStyle(fontSize: 13),
-              keyboardType: TextInputType.number,
-              autocorrect: false,
             ),
           ],
         ));

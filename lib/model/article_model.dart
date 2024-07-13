@@ -18,21 +18,21 @@ class ArticleModel extends NamedEntity {
   String codebar;
   String color;
   String refrence;
-  dynamic epaisseur;
-  dynamic longueur;
-  dynamic largeure;
-  dynamic surface;
-  dynamic electricite;
-  dynamic tableCoup;
-  dynamic faconnage;
-  dynamic lavage;
-  dynamic serigraphie;
-  dynamic tremp;
-  dynamic prixVent;
-  dynamic service;
-  dynamic trou;
-  dynamic prixTrou;
-  dynamic cout;
+  double epaisseur;
+  double longueur;
+  double largeure;
+  double surface;
+  double electricite;
+  double tableCoup;
+  double faconnage;
+  double lavage;
+  double serigraphie;
+  double tremp;
+  double prixVent;
+  double service;
+  int trou;
+  double prixTrou;
+  double cout;
   String? image;
   DateTime createdAt;
 
@@ -51,11 +51,11 @@ class ArticleModel extends NamedEntity {
     required this.faconnage,
     required this.lavage,
     required this.serigraphie,
-    this.cout,
-    this.service,
-    this.trou,
-    this.prixTrou,
-    this.prixVent,
+    required this.cout,
+    required this.service,
+    required this.trou,
+    required this.prixTrou,
+    required this.prixVent,
     this.image,
     required this.tremp,
     required this.createdAt,
@@ -69,30 +69,29 @@ class ArticleModel extends NamedEntity {
         refrence: json["refrence"],
         codebar: json["codebar"],
         color: json["color"],
-        epaisseur: json["epaisseur"],
-        longueur: json["longueur"],
-        largeure: json["largeure"],
-        surface: json["surface"],
-        electricite: json["electricite"],
-        tableCoup: json["table_coup"],
-        faconnage: json["faconnage"],
-        lavage: json["lavage"],
-        serigraphie: json["serigraphie"],
-        tremp: json["tremp"],
-        cout: json["cout"],
-        image: json["image_data"],
-        service: json["serviceA"],
-        trou: json["trou"] ?? 0,
-        prixTrou: json["prixTrou"] ?? 0,
+        epaisseur: double.parse(json["epaisseur"].toString()),
+        longueur: double.parse(json["longueur"].toString()),
+        largeure: double.parse(json["largeure"].toString()),
+        surface: double.parse(json["surface"].toString()),
+        electricite: double.parse(json["electricite"].toString()),
+        tableCoup: double.parse(json["table_coup"].toString()),
+        faconnage: double.parse(json["faconnage"].toString()),
+        lavage: double.parse(json["lavage"].toString()),
+        serigraphie: double.parse(json["serigraphie"].toString()),
+        tremp: double.parse(json["tremp"].toString()),
+        cout: double.parse(json["cout"].toString()),
+        service: double.parse(json["serviceA"].toString()),
+        trou: int.parse(json["trou"].toString()),
+        prixTrou: double.parse(json["prixTrou"].toString()),
         createdAt: json["createdAt"] == null
             ? DateTime.now()
-            : DateTime.parse(json["createdAt"]),
-        prixVent: json["prixVent"],
+            : DateTime.parse(json["createdAt"].toString()),
+        prixVent: double.parse(json["prixVent"].toString()),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "nameA":name,
+        "nameA": name,
         "nom_piece": nomPiece,
         "refrence": refrence,
         "codebar": codebar,

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:abgtools/constant.dart';
+import 'package:abgtools/setting/storage_cache.dart';
 import 'package:abgtools/utils/helpers/custom_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -9,8 +10,6 @@ import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
 
 abstract class BaseGetxController extends GetxController {
   RxBool isBusy = false.obs;
-
-  
 
   APIInvoke(Function execute) async {
     try {
@@ -40,9 +39,8 @@ abstract class BaseGetxController extends GetxController {
                 backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6))),
-                padding:  MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15))
-                    ),
+                padding: MaterialStateProperty.all(
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15))),
           ),
           cancelTextColor: Colors.black,
           buttonColor: primaryColor,
@@ -60,7 +58,8 @@ abstract class BaseGetxController extends GetxController {
             ],
           ),
           radius: 3.0);
-     
+            await clearEnvirenment();
+      await authService.init();
     } on TimeoutException catch (e) {
       await Get.defaultDialog(
           title: 'excuseme'.tr,
@@ -83,8 +82,7 @@ abstract class BaseGetxController extends GetxController {
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6))),
                 padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15))
-                    ),
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15))),
           ),
           cancelTextColor: Colors.black,
           buttonColor: primaryColor,
@@ -126,8 +124,7 @@ abstract class BaseGetxController extends GetxController {
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6))),
                 padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15))
-                    ),
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15))),
           ),
           cancelTextColor: Colors.black,
           buttonColor: primaryColor,
@@ -177,9 +174,8 @@ abstract class BaseGetxController extends GetxController {
                 backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6))),
-                padding:  MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15))
-                   ),
+                padding: MaterialStateProperty.all(
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15))),
           ),
           cancelTextColor: Colors.black,
           buttonColor: primaryColor,
@@ -200,7 +196,8 @@ abstract class BaseGetxController extends GetxController {
       await Future.delayed(
         const Duration(seconds: 5),
       );
-  
+      await clearEnvirenment();
+      await authService.init();
     } on TimeoutException catch (e) {
       await Get.defaultDialog(
           title: 'excuseme'.tr,
@@ -223,8 +220,7 @@ abstract class BaseGetxController extends GetxController {
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6))),
                 padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15))
-                 ),
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15))),
           ),
           cancelTextColor: Colors.black,
           buttonColor: primaryColor,
@@ -266,9 +262,8 @@ abstract class BaseGetxController extends GetxController {
                 backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6))),
-                padding:  MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15))
-                   ),
+                padding: MaterialStateProperty.all(
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15))),
           ),
           cancelTextColor: Colors.black,
           buttonColor: primaryColor,
@@ -289,7 +284,7 @@ abstract class BaseGetxController extends GetxController {
       await Future.delayed(
         const Duration(seconds: 5),
       );
-    } 
+    }
   }
 
   APIInvokeDialog(Function execute) async {
@@ -341,9 +336,8 @@ abstract class BaseGetxController extends GetxController {
                 backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6))),
-                padding:  MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15))
-                    ),
+                padding: MaterialStateProperty.all(
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15))),
           ),
           cancelTextColor: Colors.black,
           buttonColor: primaryColor,
@@ -366,7 +360,6 @@ abstract class BaseGetxController extends GetxController {
       );
       return;
     } on TimeoutException catch (e) {
-
       await Get.defaultDialog(
           title: 'excuseme'.tr,
           // onConfirm: () {
@@ -388,8 +381,7 @@ abstract class BaseGetxController extends GetxController {
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6))),
                 padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15))
-                  ),
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15))),
           ),
           cancelTextColor: Colors.black,
           buttonColor: primaryColor,
@@ -411,9 +403,8 @@ abstract class BaseGetxController extends GetxController {
         const Duration(seconds: 5),
       );
       //show message of time out error to user try again
-     return;
+      return;
     } catch (e) {
- 
       await Get.defaultDialog(
           title: 'excuseme'.tr,
           // onConfirm: () {
@@ -434,9 +425,8 @@ abstract class BaseGetxController extends GetxController {
                 backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6))),
-                padding:  MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15))
-                    ),
+                padding: MaterialStateProperty.all(
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15))),
           ),
           cancelTextColor: Colors.black,
           buttonColor: primaryColor,
@@ -457,9 +447,9 @@ abstract class BaseGetxController extends GetxController {
       await Future.delayed(
         const Duration(seconds: 5),
       );
-       return;
-    } finally{
-        Get.back();
+      return;
+    } finally {
+      Get.back();
     }
   }
 }

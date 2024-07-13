@@ -10,6 +10,7 @@ import 'package:abgtools/utils/helpers/custom_exception.dart';
 import 'package:abgtools/utils/service/artical_api.dart';
 import 'package:abgtools/view/add_edit_article_view.dart';
 import 'package:abgtools/view/cards/article_card_item.dart';
+import 'package:abgtools/view/cards/articleinfo_card_item.dart';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,7 @@ class HomeViewModel extends PracticesViewModel<ArticleModel> {
         }, getArticlePrint),
         '');
   }
-  late String imageLoad;
+  String imageLoad = "";
   @override
   List<Widget> buildRow(DataGridRow row) {
     return authService.env!.type != 0
@@ -244,6 +245,7 @@ class HomeViewModel extends PracticesViewModel<ArticleModel> {
 
   @override
   void initializeCards() {
+    if (authService.env!.type == 0) cards.add(ArticleInfoGeneralCardItem(title: ""));
     if (authService.env!.type == 0) cards.add(ArticleInfoCardItem(title: ""));
   }
 
@@ -450,7 +452,7 @@ class HomeViewModel extends PracticesViewModel<ArticleModel> {
             codebar: codebar,
             color: couleur,
             electricite: 0,
-            epaisseur: epaisseur,
+            epaisseur: double.parse(epaisseur),
             faconnage: 0,
             largeure: 0,
             lavage: 0,
@@ -710,6 +712,8 @@ class HomeViewModel extends PracticesViewModel<ArticleModel> {
   }
 
   getArticlePrint() async {
+
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -719,7 +723,7 @@ class HomeViewModel extends PracticesViewModel<ArticleModel> {
     await APIInvokeGeneral(() async {
       imageLoad = await getImage(selectedItems[0].id.toString());
     });
-
+ 
     Uint8List byte = await generatePdf(PdfPageFormat.a4);
     String file = "${selectedItems[0].nomPiece}.pdf";
     FlutterFileSaver().writeFileAsBytes(
@@ -737,7 +741,14 @@ class HomeViewModel extends PracticesViewModel<ArticleModel> {
     final image = await imageFromAssetBundle(
       'assets/images/logo.png',
     );
-  
+ double coutGeneral=((selectedItems[0].surface + (selectedItems[0].surface * 0.15)) * selectedItems[0].cout) +
+            selectedItems[0].electricite +
+            selectedItems[0].faconnage +
+            selectedItems[0].lavage +
+            selectedItems[0].tremp +
+            (selectedItems[0].trou * selectedItems[0].prixTrou) +
+            selectedItems[0].service +
+            selectedItems[0].serigraphie;
     pdf.addPage(
       pw.Page(
         margin: pw.EdgeInsets.all(10),
@@ -847,12 +858,12 @@ class HomeViewModel extends PracticesViewModel<ArticleModel> {
               pw.SizedBox(
                 height: 15.0,
               ),
-              selectedItems[0].image!.isEmpty
+              imageLoad.isEmpty
                   ? pw.SizedBox()
                   : pw.Center(
                       child: pw.Image(
-                          width: 300,
-                          height: 300,
+                          width: 500,
+                          height: 450,
                           pw.MemoryImage(base64Decode(imageLoad))),
                     ),
               pw.SizedBox(
@@ -861,7 +872,8 @@ class HomeViewModel extends PracticesViewModel<ArticleModel> {
               pw.Container(
                 padding: pw.EdgeInsets.symmetric(horizontal: 20),
                 child: pw.Row(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    mainAxisAlignment: pw.MainAxisAlignment.center,
                     children: [
                       pw.Container(
                           width: 125,
@@ -1430,24 +1442,48 @@ class HomeViewModel extends PracticesViewModel<ArticleModel> {
               pw.Container(
                 margin: pw.EdgeInsets.symmetric(horizontal: 60),
                 child: pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.end,
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   children: [
-                    pw.Container(
-                      child: pw.Text("Prix de vente : ",
-                          style: pw.TextStyle(
-                            fontSize: 12,
-                            color: PdfColors.black,
-                          )),
+                    pw.Row(
+                      children: [
+                        pw.Container(
+                          child: pw.Text("Cout General : ",
+                              style: pw.TextStyle(
+                                fontSize: 12,
+                                color: PdfColors.black,
+                              )),
+                        ),
+                        pw.Container(
+                          child: pw.Text(
+                              "${formatCurrency.format(coutGeneral)}",
+                              style: pw.TextStyle(
+                                fontSize: 14,
+                                fontWeight: pw.FontWeight.bold,
+                                color: PdfColors.black,
+                              )),
+                        )
+                      ],
                     ),
-                    pw.Container(
-                      child: pw.Text(
-                          "${formatCurrency.format(selectedItems[0].prixVent)}",
-                          style: pw.TextStyle(
-                            fontSize: 14,
-                            fontWeight: pw.FontWeight.bold,
-                            color: PdfColors.black,
-                          )),
-                    )
+                    pw.Row(
+                      children: [
+                        pw.Container(
+                          child: pw.Text("Prix de vente : ",
+                              style: pw.TextStyle(
+                                fontSize: 12,
+                                color: PdfColors.black,
+                              )),
+                        ),
+                        pw.Container(
+                          child: pw.Text(
+                              "${formatCurrency.format(selectedItems[0].prixVent)}",
+                              style: pw.TextStyle(
+                                fontSize: 14,
+                                fontWeight: pw.FontWeight.bold,
+                                color: PdfColors.black,
+                              )),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ),
